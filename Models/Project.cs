@@ -21,10 +21,12 @@ namespace TheBugTracker.Models
         public string? Description { get; set; }
 
         [DisplayName("Start Date")]
-        public DateTimeOffset? StartDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTimeOffset StartDate { get; set; }
 
         [DisplayName("End Date")]
-        public DateTimeOffset? EndDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTimeOffset EndDate { get; set; }
 
         [DisplayName("Priority")]
         public int ProjectPriorityId { get; set; }
@@ -41,7 +43,7 @@ namespace TheBugTracker.Models
         public string? FileContentType { get; set; }
 
         [DisplayName("Archived")]
-        public bool? Archived { get; set; }
+        public bool Archived { get; set; }
 
         //Navigation Properties
         public virtual Company? Company { get; set; }

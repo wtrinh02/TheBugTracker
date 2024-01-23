@@ -1,14 +1,18 @@
 ﻿@model IEnumerable<TheBugTracker.Models.Project>
+@using TheBugTracker.Models.Enums
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "My Projects";
 }
 
-<h1>Index</h1>
+<h1>My Projects</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -80,15 +84,19 @@
                 @Html.DisplayFor(modelItem => item.ProjectPriority.Id)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                @if (item.Archived)
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                @if (User.IsInRole(nameof(Roles.Admin)) || User.IsInRole(nameof(Roles.ProjectManager)))
                 {
-                        <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
-                }
-                else
-                {
-                        <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
+                    
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                    @if (item.Archived)
+                    {
+                            <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+                    }
+                    else
+                    {
+                            <a asp-action="Archive" asp-route-id="@item.Id">Archive</a>
+                    }
                 }
 
             </td>

@@ -19,14 +19,17 @@ namespace TheBugTracker.Models
 
         [DataType(DataType.Date)]
         [DisplayName("Created")]
-        public DateTimeOffset? Created { get; set; }
+        public DateTimeOffset Created { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayName("Updated")]
         public DateTimeOffset? Updated { get; set; }
 
         [DisplayName("Archived")]
-        public bool? Archived { get; set; }
+        public bool Archived { get; set; }
+
+        [DisplayName("Archived By Project")]
+        public bool ArchivedByProject { get; set; }
 
         [DisplayName("Project")]
         public int ProjectId { get; set; }
