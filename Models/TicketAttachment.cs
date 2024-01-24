@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TheBugTracker.Extensions;
 
 namespace TheBugTracker.Models
 {
@@ -12,7 +13,7 @@ namespace TheBugTracker.Models
         public int TicketId { get; set; }
 
         [DisplayName("File Date")]
-        public DateTimeOffset? Created { get; set; }
+        public DateTimeOffset Created { get; set; }
 
         [DisplayName("Team Member")]
         public string? UserId { get; set; }
@@ -20,9 +21,12 @@ namespace TheBugTracker.Models
         [DisplayName("File Description")]
         public string? Description { get; set; }
 
-        [NotMapped]
-        [DataType(DataType.Upload)]
-        public IFormFile? FormFile { get; set; }
+		[NotMapped]
+		[DisplayName("Select a file")]
+		[DataType(DataType.Upload)]
+		[MaxFileSize(1024 * 1024)]
+		[AllowedExtensions(new string[] { ".jpg", ".png", ".doc", ".docx", ".xls", ".xlsx", ".pdf", ".ppt", ".pptx", ".html", ".txt" })]
+		public IFormFile? FormFile { get; set; }
 
         [DisplayName("File Name")]
         public string? FileName { get; set; }

@@ -10,7 +10,7 @@ namespace TheBugTracker.Models
         public string? Comment { get; set; }
 
         [DisplayName("Date")]
-        public DateTimeOffset? Created { get; set; }
+        public DateTimeOffset Created { get; set; }
 
         [DisplayName("Ticket")]
         public int TicketId { get; set;}
