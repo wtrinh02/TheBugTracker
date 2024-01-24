@@ -79,6 +79,41 @@ namespace TheBugTracker.Controllers
             return View(projects);
         }
 
+		public async Task<IActionResult> UnassignedProjects()
+		{
+			int companyId = User.Identity.GetCompanyId().Value;
+
+			List<Project> projects = await _projectService.GetUnassignedProjectsAsync(companyId);
+
+			return View(projects);
+		}
+
+        public async Task<IActionResult> AssignPM(int projectId)
+        {
+            int companyId = User.Identity.GetCompanyId().Value;
+
+            AssignPMViewModel model = new();
+
+            model.Project = await _projectService.GetProjectByIdAsync(projectId, companyId);
+            model.PMList = new SelectList(await _rolesService.GetUsersInRoleAsync(nameof(Roles.ProjectManager), companyId), "Id", "FullName");
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AssignPM(AssignPMViewModel model)
+        {
+            if(!string.IsNullOrEmpty(model.PMID))
+            {
+                await _projectService.AddProjectManagerAsync(model.PMID, model.Project.Id);
+
+                return RedirectToAction(nameof(Details), new {id = model.Project.Id } );
+            }
+
+            return RedirectToAction(nameof(AssignPM), new {projectId = model.Project.Id});
+        }
+
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {

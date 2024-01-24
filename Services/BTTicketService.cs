@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using TheBugTracker.Data;
 using TheBugTracker.Models;
 using TheBugTracker.Models.Enums;
@@ -422,7 +424,22 @@ namespace TheBugTracker.Services
             }
         }
 
-        public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
+        public async Task<List<Ticket>> GetUnassignedTicketsAsync(int companyId)
+        {
+			List<Ticket> tickets = new();
+			try
+			{
+                tickets = (await GetAllTicketsByCompanyAsync(companyId)).Where(t => string.IsNullOrEmpty(t.DeveloperUserId)).ToList();
+				return tickets;
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
+		public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
         {
             try 
             { 

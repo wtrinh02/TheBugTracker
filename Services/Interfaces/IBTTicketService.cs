@@ -28,6 +28,8 @@ namespace TheBugTracker.Services.Interfaces
         public Task<List<Ticket>> GetProjectTicketsByPriorityAsync(string priorityName, int companyId, int projectId);
         public Task<List<Ticket>> GetProjectTicketsByTypeAsync(string typeName, int companyId, int projectId);
 
+        public Task<List<Ticket>> GetUnassignedTicketsAsync(int companyId); 
+
 
         public Task<int?> LookupTicketPriorityIdAsync(string priorityName);
         public Task<int?> LookupTicketStatusIdAsync(string statusName);
