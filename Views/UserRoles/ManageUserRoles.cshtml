@@ -1,35 +1,53 @@
 ﻿@model IEnumerable<TheBugTracker.Models.ViewModels.ManageUserRolesViewModel>
+@using TheBugTracker.Services.Interfaces
+@using TheBugTracker.Models.Enums
+
+@inject IBTRolesService RolesService
 
 <div class="row">
     <h2 class="m-t-0 h3"><b>Manage Member Roles </b></h2>
     @foreach (var member in Model)
     {
-        <div class="row">
-            <div class="card col-4 m-3">
-                <div class="card-body">
-                    <p class="text-muted font-13 m-b-30">
-                        This form displays the current roles assigned to the user: <strong class="text-info">@member.BTUser.FullName</strong>.
-                        Use the dropdown to select the roles this user should be assigned.
-                        Once roles are selected, click "Assign Roles" to submit the form.
-                    </p>
-                    <hr />
-                    <form asp-action="ManageUserRoles" asp-controller="UserRoles" method=post>
-                        <input type="hidden" asp-for="@member.BTUser.Id" />
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="input-group">
-                                    <label asp-for="@member.Roles" class="form-label">Roles for @member.BTUser.FullName</label>
-                                    <select asp-for="@member.SelectedRoles" class="form-control" asp-items="@member.Roles" multiple></select>
-                                    <hr />
-                                </div>
-                                <div class="input-group">
-                                    <input type="submit" value="Assign Role" class="btn btn-info" />
+        if (!await RolesService.IsUserInRoleAsync(member.BTUser, nameof(Roles.Admin)))
+        {
+
+            <div class="row">
+                <div class="card col-4 m-3">
+                    <div class="card-body">
+                        <p class="text-muted font-13 m-b-30">
+                            This form displays the current roles assigned to the user: <strong class="text-info">@member.BTUser.FullName</strong>.
+                            Use the dropdown to select the roles this user should be assigned.
+                            Once roles are selected, click "Assign Roles" to submit the form.
+                        </p>
+                        <hr />
+                        <form asp-action="ManageUserRoles" asp-controller="UserRoles" method=post>
+                            <input type="hidden" asp-for="@member.BTUser.Id" />
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="input-group">
+                                        <label asp-for="@member.Roles" class="form-label">Roles for @member.BTUser.FullName</label>
+                                        <select asp-for="@member.SelectedRoles" class="form-control" asp-items="@member.Roles" multiple></select>
+                                        <hr />
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="submit" value="Assign Role" class="btn btn-info" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     }
 </div>
+
+@section Scripts {
+    <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/sidebarmenu.js"></script>
+    <script src="/assets/js/app.min.js"></script>
+    <script src="/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="/assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+}

@@ -5,37 +5,52 @@
     BTUser btUser = await UserManager.GetUserAsync(User);
 }
 
-<div class="dropdown py-sm-4 ms-auto ms-sm-0 flex-shrink-1">
 
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="" width="28" height="28" class="rounded-circle">
-            <span class="d-none d-sm-inline mx-1">@btUser.FirstName</span>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-            <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Profile</a></li>
-            <li>
-                <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit();">Sign out</a></li>
-        </ul>
 
-    }
-    else
-    {
-        <a asp-area="Identity" asp-page="/Account/Login" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="" width="28" height="28" class="rounded-circle">
-            <span class="d-none d-sm-inline mx-1">Log In</span>
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+        aria-expanded="false">
+            <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="" width="35" height="35" class="rounded-circle">
         </a>
-        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-            <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Register</a></li>
-            <li>
-                <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Sign In</a></li>
-        </ul>
-    }
-</div>
+        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+            <div class="message-body">
+                <a  class="d-flex align-items-center gap-2 dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                    <i class="ti ti-user fs-6"></i>
+                    <p class="mb-0 fs-3">My Profile</p>
+                </a>
+                <a href="javascript:document.getElementById('logoutForm').submit();" class="d-flex align-items-center gap-2 dropdown-item">
+                    <i class="ti ti-logout fs-6"></i>
+                    <p class="mb-0 fs-3">Sign out</p>
+                </a>
+
+            </div>
+        </div>
+    </li>
+}
+else
+{
+    <li class="nav-item dropdown">
+        <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+           aria-expanded="false">
+            <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" alt="" width="35" height="35" class="rounded-circle">
+        </a>
+        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+            <div class="message-body">
+                <a class="d-flex align-items-center gap-2 dropdown-item" asp-area="Identity" asp-page="/Account/Login"  title="Manage">
+                    <i class="ti ti-user fs-6"></i>
+                    <p class="mb-0 fs-3">Log In</p>
+                </a>
+                <a asp-area="Identity" asp-page="/Account/Register" class=" d-flex align-items-center gap-2 dropdown-item">
+                    <i class="ti ti-mail fs-6"></i>
+                    <p class="mb-0 fs-3">Register</p>
+                </a>
+            </div>
+        </div>
+    </li>
+}
+
 <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
 </form>

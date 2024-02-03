@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using TheBugTracker.Models;
 
 namespace TheBugTracker.Controllers
 {
+    
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -28,6 +30,7 @@ namespace TheBugTracker.Controllers
         }
 
         // GET: Companies/Details/5
+        //TODO: PROBABLY ONLY METHOD TO USE TO SEE COMPANY
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Companies == null)

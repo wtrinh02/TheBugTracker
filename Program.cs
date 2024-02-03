@@ -43,6 +43,7 @@ builder.Services.AddScoped<IEmailSender, BTEmailService>();
 builder.Services.AddControllersWithViews();
 
 
+
 var app = builder.Build();
 
 //DataUtility class
@@ -67,6 +68,8 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+
 
 app.MapControllerRoute(
     name: "default",

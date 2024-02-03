@@ -1,0 +1,6 @@
+﻿@model TheBugTracker.Models.Invite
+
+
+<h1>Welcome, @Model.InviteeFirstName @Model.InviteeLastName!</h1>
+<h3>@Model.Invitor.FullName has invited you to join <strong>@Model.Company.Name</strong> for @Model.Project?.Name. Click the button below to complete registration and begin working with the team.</h3>
+<a class="btn btn-primary" asp-area="Identity" asp-page="/Account/RegisterByInvite" asp-route-token="@Model.CompanyToken" asp-route-email="@Model.InviteeEmail" asp-route-companyId="@Model.CompanyId">Join</a>

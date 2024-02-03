@@ -2,3 +2,9 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
+
+new DataTable('#projectsTable');
+new DataTable('#ticketsTable');
+new DataTable('#membersTable');
+new DataTable('#allProjects');
