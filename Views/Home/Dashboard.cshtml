@@ -43,7 +43,7 @@
 		
 		<!-- Info Pills -->
 		<div class="row mt-3">
-			<div class="col">
+			<div class="col col-12-md">
 				<a asp-action="AllProjects" asp-controller="Projects" style="text-decoration:none">
 				<div class="card overflow-hidden">
 					<div class="card-body p-4">
@@ -69,7 +69,7 @@
 				</div>
 				</a>
 			</div>
-			<div class="col">
+			<div class="col col-12-md">
 				<a asp-action="AllTickets" asp-controller="Tickets" style="text-decoration:none">
 				<div class="card overflow-hidden">
 					<div class="card-body p-4">
@@ -95,7 +95,7 @@
 				</div>
 				</a>
 			</div>
-			<div class="col">
+			<div class="col col-12-md">
 				<div class="card overflow-hidden">
 					<div class="card-body p-4">
 						<h5 class="card-title mb-9 fw-semibold">Members <span class="text-primary fs-3">| By Role</span></h5>
@@ -208,7 +208,23 @@
 												<td><a asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id" style ="color:black"><strong>@project.Name</strong></a></td>
 												<td><span style="font-size:small">@project.StartDate.ToString("MM.dd.yyyy")</span></td>
 												<td><span style="font-size:small">@project.EndDate.ToString("MM.dd.yyyy")</span></td>
-												<td><span class="badge bg-dark">@project.ProjectPriority?.Name</span></td>
+												@if (@project.ProjectPriority?.Name == nameof(BTProjectPriority.Low))
+												{
+													<td><span class="badge bg-success">@project.ProjectPriority?.Name</span></td>
+												}
+												else if (@project.ProjectPriority?.Name == nameof(BTProjectPriority.Medium))
+												{
+													<td><span class="badge bg-info">@project.ProjectPriority?.Name</span></td>
+												}
+												else if (@project.ProjectPriority?.Name == nameof(BTProjectPriority.High))
+												{
+													<td><span class="badge bg-warning">@project.ProjectPriority?.Name</span></td>
+												}
+												else
+												{
+													<td><span class="badge bg-danger">@project.ProjectPriority?.Name</span></td>
+												}
+
 												<td>
 													<a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-controller="Projects" asp-route-id="@project.Id"><i class="fs-5 bi-justify"></i> </a>
 												</td>
@@ -266,16 +282,32 @@
 
 													}
 												</td>
-												@if (ticket.TicketStatus.Name == "New")
+												@if (ticket.TicketStatus?.Name == "New")
 												{
 													<td><span class="badge bg-success rounded-pill">@ticket.TicketStatus.Name </span></td>
 
 												}
 												else
 												{
-													<td><span class="badge bg-secondary rounded-pill">@ticket.TicketStatus.Name </span></td>
+													<td><span class="badge bg-secondary rounded-pill">@ticket.TicketStatus?.Name </span></td>
 												}
-												<td><span class="badge bg-dark">@ticket.TicketPriority?.Name </span></td>
+												@if(ticket.TicketPriority?.Name == nameof(BTTicketPriority.Low))
+												{
+													<td><span class="badge bg-success">@ticket.TicketPriority?.Name </span></td>
+												}
+												else if (ticket.TicketPriority?.Name == nameof(BTTicketPriority.Medium))
+												{
+													<td><span class="badge bg-info">@ticket.TicketPriority?.Name </span></td>
+												}
+												else if (ticket.TicketPriority?.Name == nameof(BTTicketPriority.High))
+												{
+													<td><span class="badge bg-warning">@ticket.TicketPriority?.Name </span></td>
+												}
+												else 
+												{
+													<td><span class="badge bg-danger">@ticket.TicketPriority?.Name </span></td>
+												}
+
 												<td><span style="font-size:small">@ticket.Created.ToString("MM.dd.yyyy")</span></td>
 												<td>
 													<a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id"><i class="fs-5 bi-justify"></i></a>
@@ -323,9 +355,9 @@
 												<td>
 													<a href="javascript:void(0);" class="me-1">
 
-														@if (btUser?.AvatarFileData != null)
+														@if (member?.AvatarFileData != null)
 														{
-															<img class="media-object" src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarFileData))" alt="" />
+															<img class="media-object rounded-circle border border-dark" style="width:30px;height:30px;" src="data:image/*;base64,@(Convert.ToBase64String(member.AvatarFileData))" alt="" />
 														}
 														else
 														{
@@ -335,8 +367,15 @@
 													<a asp-action="EmployeeDetails" asp-controller="Companies" asp-route-id="@member.Id" style="color:black">@member.FullName</a>
 												</td>
 												<td>@((await RolesService.GetUserRolesAsync(member)).FirstOrDefault())</td>
-												<td>2</td>
-												<td>1</td>
+												<td>
+													@if(await RolesService.IsUserInRoleAsync(member, nameof(Roles.Admin))){
+														@Model.Projects.Where(p => (p.StartDate < DateTime.Now && p.EndDate > DateTime.Now)).Count();
+													}
+													else{
+														@Model.Projects.Where(p => (p.StartDate < DateTime.Now && p.EndDate > DateTime.Now) && p.Members.Contains(member)).Count()
+													}
+												</td>
+												<td>@Model.Tickets.Where(p => (p.OwnerUserId == member.Id || p.DeveloperUserId == member.Id) && p.Archived == false).Count()</td>
 											</tr>
 										}
 									</tbody>
@@ -458,7 +497,6 @@
 	<script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="/assets/js/sidebarmenu.js"></script>
 	<script src="/assets/libs/simplebar/dist/simplebar.js"></script>
-	<script src="/assets/js/dashboard.js"></script>
 	
 
 }

@@ -237,7 +237,7 @@ namespace TheBugTracker.Controllers
                 }
 
                 //TODO: Redirect to All Projects
-                return RedirectToAction("Index");
+                return RedirectToAction("AllProjects");
             }
 
 
@@ -308,7 +308,7 @@ namespace TheBugTracker.Controllers
                 }
 
                 //TODO: Redirect to All Projects
-                return RedirectToAction("Index");
+                return RedirectToAction("AllProjects");
             }
             return View(RedirectToAction("Edit"));
         }
@@ -348,7 +348,7 @@ namespace TheBugTracker.Controllers
             }
             
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("AllProjects");
         }
 
 

@@ -17,9 +17,17 @@ namespace TheBugTracker.Services
 
         public async Task<List<BTUser>> GetAllMembersAsync(int companyId)
         {
-            List<BTUser> result = new();
-            result = await _context.Users.Where(u => u.CompanyId == companyId).ToListAsync();
-            return result;
+            try
+            {
+                List<BTUser> result = new();
+                result = await _context.Users.Where(u => u.CompanyId == companyId).ToListAsync();
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<List<Project>> GetAllProjectsAsync(int companyId)
@@ -74,5 +82,11 @@ namespace TheBugTracker.Services
             }
             return result;
         }
-    }
+
+		public async Task<BTUser> GetUserById(string id)
+        {
+            return await _context.Users.Include(u => u.Company).FirstOrDefaultAsync(u=> u.Id == id);
+		}
+
+	}
 }

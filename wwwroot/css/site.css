@@ -24,3 +24,16 @@ body {
 #mainnav {
     background: #f2f7ff;
 }
+
+
+
+td.test {
+    max-width: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+td.test:hover {
+    white-space:normal;
+    overflow: visible;
+}

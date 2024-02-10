@@ -10,6 +10,7 @@ namespace TheBugTracker.Services.Interfaces
         public Task<List<Project>> GetAllProjectsAsync(int companyId);
         public Task<List<Ticket>> GetAllTicketsAsync(int companyId);
 
+        public Task<BTUser> GetUserById(string id);
 
     }
 }

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TheBugTracker.Data;
 using TheBugTracker.Models;
+using TheBugTracker.Services.Interfaces;
 
 namespace TheBugTracker.Controllers
 {
@@ -15,18 +17,34 @@ namespace TheBugTracker.Controllers
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<BTUser> _userManager;
+        private readonly IBTRolesService _rolesService;
+        private readonly IBTCompanyInfoService _companyInfoService;
 
-        public CompaniesController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
 
-        // GET: Companies
-        public async Task<IActionResult> Index()
+		public CompaniesController(ApplicationDbContext context, UserManager<BTUser> userManager, IBTRolesService rolesService, IBTCompanyInfoService companyInfoService)
+		{
+			_context = context;
+			_userManager = userManager;
+			_rolesService = rolesService;
+			_companyInfoService = companyInfoService;
+		}
+
+		// GET: Companies
+		public async Task<IActionResult> Index()
         {
               return _context.Companies != null ? 
                           View(await _context.Companies.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Companies'  is null.");
+        }
+
+        public async Task<IActionResult> EmployeeDetails(string id)
+        {
+            BTUser bTUser = await _companyInfoService.GetUserById(id);
+            ViewData["Role"] = (await _rolesService.GetUserRolesAsync(bTUser)).FirstOrDefault();
+            ViewData["CName"] = bTUser.Company.Name;
+
+            return View(bTUser);
         }
 
         // GET: Companies/Details/5

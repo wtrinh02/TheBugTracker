@@ -1,7 +1,13 @@
 ﻿@model TheBugTracker.Models.Company
+@using Microsoft.AspNetCore.Identity
+@using TheBugTracker.Models.Enums
+@using TheBugTracker.Services.Interfaces
+@inject IBTRolesService RolesService
+@inject UserManager<BTUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
+    BTUser btUser = await UserManager.GetUserAsync(User);
 }
 
 <h1>Details</h1>
@@ -24,16 +30,15 @@
         </dd>
     </dl>
 </div>
-<a asp-action="ManageUserRoles" asp-controller="UserRoles" class="btn btn-primary btn-sm">Manage User Roles</a>
+@if (await RolesService.IsUserInRoleAsync(btUser, nameof(Roles.Admin)))
+{
+    <a asp-action="ManageUserRoles" asp-controller="UserRoles" class="btn btn-primary btn-sm">Manage User Roles</a>
 <a asp-action="Create" asp-controller="Invites" class="btn btn-primary btn-sm">Invite New Member</a>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+}
+
 @section Scripts {
     <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/sidebarmenu.js"></script>
     <script src="/assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="/assets/js/dashboard.js"></script>
 }

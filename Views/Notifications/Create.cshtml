@@ -1,60 +1,67 @@
-﻿@model TheBugTracker.Models.Notification
+﻿@model TheBugTracker.Models.ViewModels.CreateNotificationViewModel
+
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<section id="multiple-column-form">
+    <div class="row match-height">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Create Project</h4>
+                </div>
+                <div class="card-content">
+                    <div class="card-body">
+                        <form asp-action="Create" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h4>Notification</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="TicketId" class="control-label"></label>
-                <select asp-for="TicketId" class ="form-control" asp-items="ViewBag.TicketId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Message" class="control-label"></label>
-                <input asp-for="Message" class="form-control" />
-                <span asp-validation-for="Message" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Created" class="control-label"></label>
-                <input asp-for="Created" class="form-control" />
-                <span asp-validation-for="Created" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RecipientId" class="control-label"></label>
-                <select asp-for="RecipientId" class ="form-control" asp-items="ViewBag.RecipientId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="SenderId" class="control-label"></label>
-                <select asp-for="SenderId" class ="form-control" asp-items="ViewBag.SenderId"></select>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Viewed" /> @Html.DisplayNameFor(model => model.Viewed)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+                            <div class="form-group">
+                                <label asp-for="Notification.Title" class="control-label"></label>
+                                <input asp-for="Notification.Title" class="form-control" />
+                                <span asp-validation-for="Notification.Title" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Notification.Message" class="control-label"></label>
+                                <textarea asp-for="Notification.Message" class="form-control" id="message"></textarea>
+                                <span asp-validation-for="Notification.Message" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Notification.RecipientId" class="control-label"></label>
+                                <select asp-for="Notification.RecipientId" class="form-control" asp-items="@Model?.RecipientList"></select>
+                            </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary mt-2" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div>
+                        <a asp-action="Inbox">Back to Inbox</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+     </div>
+</section>
+
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $('#message').summernote({
+            placeholder: "Project Description"
+        });
+    </script>
+
+    <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/sidebarmenu.js"></script>
+    <script src="/assets/libs/simplebar/dist/simplebar.js"></script>
 }

@@ -25,8 +25,9 @@ namespace TheBugTracker.Controllers
         private readonly IBTTicketService _ticketService;
         private readonly IBTFileService _fileService;
         private readonly IBTTicketHistoryService _historyService;
+        private readonly IBTNotificationService _notificationService;
 
-        public TicketsController( UserManager<BTUser> userManager, IBTProjectService projectService, IBTLookupService lookupService, IBTTicketService ticketService, IBTFileService fileService, IBTTicketHistoryService historyService)
+        public TicketsController(UserManager<BTUser> userManager, IBTProjectService projectService, IBTLookupService lookupService, IBTTicketService ticketService, IBTFileService fileService, IBTTicketHistoryService historyService, IBTNotificationService notificationService)
         {
             _userManager = userManager;
             _projectService = projectService;
@@ -34,6 +35,7 @@ namespace TheBugTracker.Controllers
             _ticketService = ticketService;
             _fileService = fileService;
             _historyService = historyService;
+            _notificationService = notificationService;
         }
 
 
@@ -188,6 +190,7 @@ namespace TheBugTracker.Controllers
         public async Task<IActionResult> Create([Bind("Id,Title,Description,ProjectId,TicketTypeId,TicketPriorityId")] Ticket ticket)
         {
             BTUser btUser = await _userManager.GetUserAsync(User);
+            
 
             if (ModelState.IsValid)
             {
@@ -204,7 +207,16 @@ namespace TheBugTracker.Controllers
 					Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
 					await _historyService.AddHistoryAsync(null, newTicket, btUser.Id);
 
-					//TODO: Ticket Notification
+                    //TODO: Ticket Notification
+                    //create new ticket notif
+                    Notification notification = new();
+                    notification.Message = $"New Ticket: {ticket.Title} created by {btUser.FullName}";
+                    notification.Title = "Ticket Creation";
+                    notification.TicketId = ticket.Id;
+                    notification.SenderId = btUser.Id;
+                    notification.Created = DateTimeOffset.Now;
+                    await _notificationService.SendEmailNotificationsByRoleAsync(notification, btUser.CompanyId, nameof(Roles.Admin));
+                    await _notificationService.AddNotificationAsync(notification);
 				}
 				catch (Exception)
                 {
@@ -214,7 +226,7 @@ namespace TheBugTracker.Controllers
 
 
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("AllTickets");
             }
             
 
@@ -293,7 +305,7 @@ namespace TheBugTracker.Controllers
                 Ticket newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id);
                 await _historyService.AddHistoryAsync(oldTicket, newTicket, btUser.Id);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("AllTickets");
             }
 
             ViewData["TicketPriorityId"] = new SelectList(await _lookupService.GetTicketPrioritiesAsync(), "Id", "Name", ticket.TicketPriorityId);

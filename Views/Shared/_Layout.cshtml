@@ -21,10 +21,11 @@
     <link href="/css/site.css" rel="stylesheet" />
     <link rel="icon" type="image/png" sizes="96x96" href="/img/icons/favicon.ico">
 
+    <!--Data Tables-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
     <script defer src="https://code.jquery.com/jquery-3.7.0.js"></script>
@@ -32,6 +33,8 @@
     <script defer src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
     <script defer src="~/js/site.js"></script>
     
+
+
 
     <!--Template styling-->
 
@@ -41,6 +44,13 @@
     <!--FontAwesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!--Summernote-->
+    
+
+    <link href="~/css/summernote-lite.min.css" rel="stylesheet" />
+    <!-- include libraries(jQuery) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    
 
 
 
@@ -67,11 +77,11 @@
                         </div>
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                    <a href="javascript:void(0); pt-2">
+                        <a  pt-2" asp-action="EmployeeDetails" asp-controller="Companies" asp-route-id="@btUser?.Id">
 
                         @if (btUser?.AvatarFileData != null)
                         {
-                            <img class="media-object" src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarFileData))" alt="" />
+                                <img class="media-object rounded-circle border border-dark" style="width:100px;height:100px;" src="data:image/*;base64,@(Convert.ToBase64String(btUser.AvatarFileData))" alt="" />
                         }
                         else
                         {
@@ -122,11 +132,21 @@
                                     <i class="fs-5 ti ti-clipboard-list"></i><span class="ms-1 d-none d-sm-inline">Manage Projects</span> <i class="ti ti-caret-down"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-primary text-small shadow" aria-labelledby="dropdown">
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Projects" asp-action="Create">New project...</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Projects" asp-action="MyProjects">My Projects</a></li>
+                                    @if (await RolesService.IsUserInRoleAsync(btUser, nameof(Roles.Admin)) || await RolesService.IsUserInRoleAsync(btUser, nameof(Roles.ProjectManager)))
+                                    {
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Projects" asp-action="Create">New project...</a></li>
+                                    }
+                                    @if (!await RolesService.IsUserInRoleAsync(btUser, nameof(Roles.Admin)))
+                                    {
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Projects" asp-action="MyProjects">My Projects</a></li>
+                                    }
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Projects" asp-action="AllProjects">All Projects</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Projects" asp-action="ArchivedProjects">Archived Projects</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Projects" asp-action="UnassignedProjects">Unassigned Projects</a></li>
+                                    @if (await RolesService.IsUserInRoleAsync(btUser, nameof(Roles.Admin)))
+                                    {
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Projects" asp-action="UnassignedProjects">Unassigned Projects</a></li>
+                                    }
+
                                 </ul>
                             </li>
                             <li class="nav-small-cap">
@@ -139,10 +159,16 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-primary text-small shadow" aria-labelledby="dropdown">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Tickets" asp-action="Create">New Ticket...</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Tickets" asp-action="MyTickets">My Tickets</a></li>
+                                    @if (!await RolesService.IsUserInRoleAsync(btUser, nameof(Roles.Admin)))
+                                    {
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Tickets" asp-action="MyTickets">My Tickets</a></li>
+                                    }
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Tickets" asp-action="AllTickets">All Tickets</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Tickets" asp-action="ArchivedTickets">Archived Tickets</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Tickets" asp-action="UnassignedTickets">Unassigned Tickets</a></li>
+                                    @if (await RolesService.IsUserInRoleAsync(btUser, nameof(Roles.Admin)) || await RolesService.IsUserInRoleAsync(btUser, nameof(Roles.ProjectManager)))
+                                    {
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Tickets" asp-action="UnassignedTickets">Unassigned Tickets</a></li>
+                                    }
                                 </ul>
                             </li>
                             <li class="nav-small-cap">
@@ -150,7 +176,7 @@
                                 <span class="hide-menu">Notifications</span>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
+                                <a class="sidebar-link" asp-action="Inbox" asp-controller="Notifications" aria-expanded="false">
                                     <span>
                                         <i class="ti ti-mailbox"></i>
                                     </span>
@@ -197,7 +223,7 @@
 
                         <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
                                 <li class="nav-item me-3">
-                                    <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                                    <a class="nav-link nav-icon-hover" asp-action="Inbox" asp-controller="Notifications">
                                         <i class="ti ti-bell-ringing"></i>
                                         <div class="notification bg-primary rounded-circle"></div>
                                     </a>
@@ -216,13 +242,13 @@
             <div class="container-fluid" id="mainnav">
                 <!--  Row 1 -->
                 @RenderBody()
-              
+              <!--
                     <footer class="border-top footer text-muted text-center">
                         <div class="container">
                             &copy; 2023 - TheBugTracker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </div>
                     </footer>
-  
+                    -->
             </div>
 
         </div>
@@ -248,9 +274,10 @@
     <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/sidebarmenu.js"></script>
     <script src="/assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="/assets/js/dashboard.js"></script>
     <script src="/assets/js/app.min.js"></script>
 
+    <!--Summernote-->
+    <script src="~/js/summernote-lite.min.js"></script>
 
 @await RenderSectionAsync("Scripts", required: false)
 

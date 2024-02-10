@@ -14,7 +14,7 @@
                 <div class="card-body">
                     <form method="post" asp-action="AssignDeveloper" asp-controller="Tickets">
                         <input asp-for="Ticket.Id" hidden />
-                        <p>Description: @Model.Ticket.Description</p>
+                        <p>Description: @Html.Raw(Model.Ticket.Description)</p>
 
                         <div class="form-group">
                             <label class="col-form-label">Select Developer</label>
@@ -41,5 +41,5 @@
     <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/sidebarmenu.js"></script>
     <script src="/assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="/assets/js/dashboard.js"></script>
+   
 }

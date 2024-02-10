@@ -35,6 +35,7 @@ builder.Services.AddScoped<IBTNotificationService, BTNotificationService>();
 builder.Services.AddScoped<IBTInviteService, BTInviteService>();
 builder.Services.AddScoped<IBTFileService, BTFileService>();
 builder.Services.AddScoped<IBTLookupService, BTLookupService>();
+builder.Services.AddScoped<IBTImageService, BTImageService>();
 
 var mailString = builder.Configuration.GetSection("MailSettings");
 builder.Services.Configure<MailSettings>(mailString);

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TheBugTracker.Models;
+using TheBugTracker.Services.Interfaces;
 
 namespace TheBugTracker.Areas.Identity.Pages.Account.Manage
 {
@@ -17,13 +18,16 @@ namespace TheBugTracker.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<BTUser> _userManager;
         private readonly SignInManager<BTUser> _signInManager;
+        private readonly IBTImageService _imageService;
 
         public IndexModel(
             UserManager<BTUser> userManager,
-            SignInManager<BTUser> signInManager)
+            SignInManager<BTUser> signInManager,
+            IBTImageService imageService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _imageService = imageService;
         }
 
         /// <summary>
@@ -31,6 +35,8 @@ namespace TheBugTracker.Areas.Identity.Pages.Account.Manage
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string Username { get; set; }
+
+        public string CurrentImage { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -59,6 +65,7 @@ namespace TheBugTracker.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+            public IFormFile Image { get; set; }
         }
 
         private async Task LoadAsync(BTUser user)
@@ -67,6 +74,7 @@ namespace TheBugTracker.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
+            CurrentImage = _imageService.DecodeImage(user.AvatarFileData, user.AvatarContentType);
 
             Input = new InputModel
             {
@@ -109,6 +117,13 @@ namespace TheBugTracker.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+
+            if (Input.Image is not null)
+            {
+                user.AvatarFileData = await _imageService.EncodeImageAsync(Input.Image);
+                user.AvatarContentType = _imageService.ContentType(Input.Image);
+                await _userManager.UpdateAsync(user);
             }
 
             await _signInManager.RefreshSignInAsync(user);

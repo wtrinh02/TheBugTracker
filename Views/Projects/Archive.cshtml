@@ -36,13 +36,7 @@
             @Html.DisplayFor(model => model.EndDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FileName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FileName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FileData)
+            Image
         </dt>
         <dd class = "col-sm-10">
             @if (Model.FileData != null)
@@ -51,26 +45,8 @@
             }
             else
             {
-                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px;" src="~/image/defaultUserImage.png" />
+                <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px;" src="~/img/default_Project.jpg" />
             }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FileContentType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FileContentType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Archived)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Archived)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Company)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Company.Id)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ProjectPriority)
@@ -83,7 +59,7 @@
     <form asp-action="Archive">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Archive" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="AllProjects">Back to List</a>
     </form>
 </div>
 @section Scripts {
@@ -91,5 +67,5 @@
     <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/sidebarmenu.js"></script>
     <script src="/assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="/assets/js/dashboard.js"></script>
+
 }

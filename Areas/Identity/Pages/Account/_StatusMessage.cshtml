@@ -5,6 +5,6 @@
     var statusMessageClass = Model.StartsWith("Error") ? "danger" : "success";
     <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        @Model
+        @Model <span>Click here to <a asp-area="Identity" asp-page="/Account/Login">Login</a></span>
     </div>
 }

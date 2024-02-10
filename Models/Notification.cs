@@ -8,10 +8,10 @@ namespace TheBugTracker.Models
         public int Id { get; set; }
 
         [DisplayName("Ticket")]
-        public int TicketId { get; set; }
+        public int? TicketId { get; set; }
 
         [Required]
-        [DisplayName("Title")]
+        [DisplayName("Subject")]
         public string? Title { get; set; }
 
         [Required]

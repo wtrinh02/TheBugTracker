@@ -19,7 +19,7 @@ namespace TheBugTracker.Services
             _rolesService = rolesService;
         }
 
-        public IBTRolesService RolesService { get; }
+       
 
         public async Task AddNotificationAsync(Notification notification)
         {

@@ -4,20 +4,36 @@
     ViewData["Title"] = "Resend email confirmation";
 }
 
-<h1>@ViewData["Title"]</h1>
-<h2>Enter your email.</h2>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-floating">
-                <input asp-for="Input.Email" class="form-control" aria-required="true" />
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+
+
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <div class="row justify-content-center w-100">
+                <div class="col-md-8 col-lg-6 col-xxl-3">
+                    <div class="card mb-0">
+                        <div class="card-body">
+                            <a asp-action="Index" asp-controller="Home" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                                <img src="/img/icons/header_image.png" width="180" alt="">
+                            </a>
+                            <p class="text-center">Resend Email Confirmation</p>
+                            <form method="post">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                                <div class="form-floating">
+                                    <input asp-for="Input.Email" class="form-control" aria-required="true" />
+                                    <label asp-for="Input.Email" class="form-label"></label>
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+                                <button type="submit" class="w-100 btn btn-lg btn-primary mt-3">Resend</button>
+                            </form>
+                            <a asp-area ="Identity" asp-page="/Account/Login" class="text-center">Back to Login</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Resend</button>
-        </form>
+        </div>
     </div>
 </div>
 

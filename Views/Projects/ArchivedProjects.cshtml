@@ -13,100 +13,90 @@
 
 <h1>Archived Projects</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileData)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Archived)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Company)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProjectPriority)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileName)
-            </td>
-            <td>
-                    @if (item.FileData != null)
-                    {
-                        <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px;" src="data:image/*;base64,@(Convert.ToBase64String(item.FileData))" />
-                    }
-                    else
-                    {
-                        <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px;" src="~/image/defaultUserImage.png" />
-                    }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Archived)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Company.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectPriority.Id)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+@if(Model.Count() == 0)
+{
+    <hr />
+    <h3 class="text-center">There are no Archived Projects</h3>
 
-                    @{
-                        bool isProjectPM = (await ProjectService.GetProjectManagerAsync(item.Id))?.Id == btUser.Id;
-                    }
-                @if (User.IsInRole(nameof(Roles.Admin)) || isProjectPM)
-                {
-                    
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <span> | </span>
-                    <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
-
-
-                }
-
-            </td>
-        </tr>
 }
-    </tbody>
-</table>
+else{
+    <table class="table table-primary table-striped table-hover border border-1 border-primary mb-2" id="allProjects">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th>
+                    Image
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProjectPriority)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                    <td >
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                    <td class="test">
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                        @if (item.FileData != null)
+                        {
+                            <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px;" src="data:image/*;base64,@(Convert.ToBase64String(item.FileData))" />
+                        }
+                        else
+                        {
+                            <img id="imageFileData" class="img-fluid img-thumbnail" style="width:100px;height:80px;" src="~/img/default_Project.jpg" />
+                        }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectPriority.Id)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
+
+                        @{
+                            bool isProjectPM = (await ProjectService.GetProjectManagerAsync(item.Id))?.Id == btUser.Id;
+                        }
+                    @if (User.IsInRole(nameof(Roles.Admin)) || isProjectPM)
+                    {
+                    
+                        <span> | </span><a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <span> | </span>
+                        <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+
+
+                    }
+
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+}
 @section Scripts {
     <script src="/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/js/sidebarmenu.js"></script>
     <script src="/assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="/assets/js/dashboard.js"></script>
+
 }

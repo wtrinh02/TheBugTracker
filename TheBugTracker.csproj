@@ -50,11 +50,19 @@
     <Compile Remove="Controllers\TicketPrioritiesController.cs" />
     <Compile Remove="Controllers\TicketStatusController.cs" />
     <Compile Remove="Controllers\TicketTypesController.cs" />
+    <Compile Remove="Models\ViewModels\InboxViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Invites\Delete.cshtml" />
+    <Content Remove="Views\Invites\Details.cshtml" />
+    <Content Remove="Views\Invites\Edit.cshtml" />
+    <Content Remove="Views\Invites\Index.cshtml" />
+    <Content Remove="Views\Notifications\Edit.cshtml" />
+    <Content Remove="Views\Notifications\Index.cshtml" />
     <Content Remove="Views\Projects\Index.cshtml" />
     <Content Remove="Views\Tickets\Index.cshtml" />
+    <Content Remove="wwwroot\assets\js\dashboard.js" />
     <Content Remove="wwwroot\favicon.ico" />
   </ItemGroup>
 
@@ -63,7 +71,6 @@
     <None Include="wwwroot\assets\css\icons\tabler-icons\fonts\tabler-icons.woff2" />
     <None Include="wwwroot\assets\images\logos\dark-logo.svg" />
     <None Include="wwwroot\assets\js\app.min.js" />
-    <None Include="wwwroot\assets\js\dashboard.js" />
     <None Include="wwwroot\assets\js\sidebarmenu.js" />
     <None Include="wwwroot\assets\libs\apexcharts\dist\apexcharts.amd.js" />
     <None Include="wwwroot\assets\libs\apexcharts\dist\apexcharts.common.js" />
@@ -553,6 +560,7 @@
     <None Include="wwwroot\assets\scss\utilities\_icon-size.scss" />
     <None Include="wwwroot\assets\scss\variables\_theme-variables.scss" />
     <None Include="wwwroot\assets\scss\variables\_variables.scss" />
+    <None Include="wwwroot\css\font\summernote.woff2" />
   </ItemGroup>
 
   <ItemGroup>
