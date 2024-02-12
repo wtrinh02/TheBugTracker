@@ -37,7 +37,7 @@ namespace TheBugTracker.Data
                 Username = userInfo[0],
                 Password = userInfo[1],
                 Database = databaseUri.LocalPath.TrimStart('/'),
-                SslMode = SslMode.Prefer,
+                SslMode = SslMode.Require,
                 TrustServerCertificate = true
             };
             return builder.ToString();
