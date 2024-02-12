@@ -31,8 +31,14 @@ namespace TheBugTracker.Services
             try
             {
                 using var smtp = new SmtpClient();
-                smtp.Connect(_mailSettings.MailHost, _mailSettings.MailPort, SecureSocketOptions.StartTls);
-                smtp.Authenticate(_mailSettings.Mail, _mailSettings.MailPassword);
+
+                var host = _mailSettings.MailHost ?? Environment.GetEnvironmentVariable("MailHost");
+                var port = _mailSettings.MailPort != 0 ? _mailSettings.MailPort : int.Parse(Environment.GetEnvironmentVariable("MailPort")!);
+                var password = _mailSettings.MailPassword ?? Environment.GetEnvironmentVariable("MailPassword");
+                var mail = _mailSettings.Mail ?? Environment.GetEnvironmentVariable("Mail");
+
+                smtp.Connect(host, port, SecureSocketOptions.StartTls);
+                smtp.Authenticate(mail,password);
 
                 await smtp.SendAsync(email);
 
