@@ -57,7 +57,7 @@
 </head>
 <body >
 
-    @if (SignInManager.IsSignedIn(User))
+    @if (SignInManager.IsSignedIn(User) && btUser != null)
     {
         <!--  Body Wrapper -->
         <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -89,10 +89,10 @@
                         }
                     </a>
 
-                    <strong>@btUser.FullName</strong>
+                    <strong>@btUser?.FullName</strong>
                     <span class="text-muted " style="font-size:x-small;">
 
-                        <strong> @((await RolesService.GetUserRolesAsync(btUser)).FirstOrDefault())</strong>
+                            <strong> @((await RolesService.GetUserRolesAsync(btUser)).FirstOrDefault())</strong>
                     </span>
                     <span class="text-muted" style="font-size:x-small;">
 

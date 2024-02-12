@@ -69,6 +69,7 @@ namespace TheBugTracker.Data
             await SeedDefaultProjectPriorityAsync(dbContextSvc);
             await SeedDefautProjectsAsync(dbContextSvc);
             await SeedDefautTicketsAsync(dbContextSvc);
+
         }
 
 
@@ -89,9 +90,8 @@ namespace TheBugTracker.Data
                 IList<Company> defaultcompanies = new List<Company>() {
                     new Company() { Name = "Company1", Description="This is default Company 1" },
                     new Company() { Name = "Company2", Description="This is default Company 2" },
-                    new Company() { Name = "Company3", Description="This is default Company 3" },
-                    new Company() { Name = "Company4", Description="This is default Company 4" },
-                    new Company() { Name = "Company5", Description="This is default Company 5" }
+                    new Company() { Name = "Demo Company", Description="This is Demo Company." },
+
                 };
 
                 var dbCompanies = context.Companies.Select(c => c.Name).ToList();
@@ -101,9 +101,7 @@ namespace TheBugTracker.Data
                 //Get company Ids
                 company1Id = context.Companies.FirstOrDefault(p => p.Name == "Company1").Id;
                 company2Id = context.Companies.FirstOrDefault(p => p.Name == "Company2").Id;
-                company3Id = context.Companies.FirstOrDefault(p => p.Name == "Company3").Id;
-                company4Id = context.Companies.FirstOrDefault(p => p.Name == "Company4").Id;
-                company5Id = context.Companies.FirstOrDefault(p => p.Name == "Company5").Id;
+                company3Id = context.Companies.FirstOrDefault(p => p.Name == "Demo Company").Id;
             }
             catch (Exception ex)
             {
@@ -197,8 +195,17 @@ namespace TheBugTracker.Data
                          StartDate = new DateTime(2021,8,20),
                          EndDate = new DateTime(2021,8,20).AddMonths(3),
                          ProjectPriorityId = priorityHigh
-                     }
-                };
+                     },
+					new Project()
+					 {
+						 CompanyId = company3Id,
+						 Name = "Demo Company First Project",
+						 Description="Demo Company's first project. A python application that helps visualize different searching techniques using pygame.",
+						 StartDate = new DateTime(2024,1,20),
+						 EndDate = new DateTime(2024,1,20).AddMonths(6),
+						 ProjectPriorityId = priorityHigh
+					 }
+				};
 
                 var dbProjects = context.Projects.Select(c => c.Name).ToList();
                 await context.Projects.AddRangeAsync(projects.Where(c => !dbProjects.Contains(c.Name)));
@@ -574,7 +581,7 @@ namespace TheBugTracker.Data
                 FirstName = "Demo",
                 LastName = "Admin",
                 EmailConfirmed = true,
-                CompanyId = company2Id
+                CompanyId = company3Id
             };
             try
             {
@@ -605,7 +612,7 @@ namespace TheBugTracker.Data
                 FirstName = "Demo",
                 LastName = "ProjectManager",
                 EmailConfirmed = true,
-                CompanyId = company2Id
+                CompanyId = company3Id
             };
             try
             {
@@ -635,7 +642,7 @@ namespace TheBugTracker.Data
                 FirstName = "Demo",
                 LastName = "Developer",
                 EmailConfirmed = true,
-                CompanyId = company2Id
+                CompanyId = company3Id
             };
             try
             {
@@ -665,7 +672,7 @@ namespace TheBugTracker.Data
                 FirstName = "Demo",
                 LastName = "Submitter",
                 EmailConfirmed = true,
-                CompanyId = company2Id
+                CompanyId = company3Id
             };
             try
             {
@@ -695,7 +702,7 @@ namespace TheBugTracker.Data
                 FirstName = "Demo",
                 LastName = "NewUser",
                 EmailConfirmed = true,
-                CompanyId = company2Id
+                CompanyId = company3Id
             };
             try
             {
@@ -808,9 +815,10 @@ namespace TheBugTracker.Data
             int blogId = context.Projects.FirstOrDefault(p => p.Name == "Build a supplemental Blog Web Application").Id;
             int bugtrackerId = context.Projects.FirstOrDefault(p => p.Name == "Build an Issue Tracking Web Application").Id;
             int movieId = context.Projects.FirstOrDefault(p => p.Name == "Build a Movie Information Web Application").Id;
+            int demoId = context.Projects.FirstOrDefault(p => p.Name == "Demo Company First Project").Id;
 
-            //Get ticket type Ids
-            int typeNewDev = context.TicketTypes.FirstOrDefault(p => p.Name == BTTicketType.NewDevelopment.ToString()).Id;
+			//Get ticket type Ids
+			int typeNewDev = context.TicketTypes.FirstOrDefault(p => p.Name == BTTicketType.NewDevelopment.ToString()).Id;
             int typeWorkTask = context.TicketTypes.FirstOrDefault(p => p.Name == BTTicketType.WorkTask.ToString()).Id;
             int typeDefect = context.TicketTypes.FirstOrDefault(p => p.Name == BTTicketType.Defect.ToString()).Id;
             int typeEnhancement = context.TicketTypes.FirstOrDefault(p => p.Name == BTTicketType.Enhancement.ToString()).Id;
@@ -911,8 +919,17 @@ namespace TheBugTracker.Data
                                 new Ticket() {Title = "Movie Ticket 18", Description = "Ticket details for movie ticket 18", Created = DateTimeOffset.Now, ProjectId = movieId, TicketPriorityId = priorityMedium, TicketStatusId = statusDev,  TicketTypeId = typeEnhancement},
                                 new Ticket() {Title = "Movie Ticket 19", Description = "Ticket details for movie ticket 19", Created = DateTimeOffset.Now, ProjectId = movieId, TicketPriorityId = priorityHigh, TicketStatusId = statusNew,  TicketTypeId = typeChangeRequest},
                                 new Ticket() {Title = "Movie Ticket 20", Description = "Ticket details for movie ticket 20", Created = DateTimeOffset.Now, ProjectId = movieId, TicketPriorityId = priorityUrgent, TicketStatusId = statusNew, TicketTypeId = typeNewDev},
+                                //Demo
+                                new Ticket() {Title = "Demo Ticket 1", Description = "Ticket details for demo ticket 1", Created = DateTimeOffset.Now, ProjectId = demoId, TicketPriorityId = priorityUrgent, TicketStatusId = statusNew, TicketTypeId = typeNewDev},
+								new Ticket() {Title = "Demo Ticket 2", Description = "Ticket details for demo ticket 2", Created = DateTimeOffset.Now, ProjectId = demoId, TicketPriorityId = priorityHigh, TicketStatusId = statusDev, TicketTypeId = typeChangeRequest},
+								new Ticket() {Title = "Demo Ticket 3", Description = "Ticket details for demo ticket 3", Created = DateTimeOffset.Now, ProjectId = demoId, TicketPriorityId = priorityMedium, TicketStatusId = statusNew, TicketTypeId = typeDefect},
+								new Ticket() {Title = "Demo Ticket 4", Description = "Ticket details for demo ticket 4", Created = DateTimeOffset.Now, ProjectId = demoId, TicketPriorityId = priorityLow, TicketStatusId = statusDev, TicketTypeId = typeEnhancement},
+								new Ticket() {Title = "Demo Ticket 5", Description = "Ticket details for demo ticket 5", Created = DateTimeOffset.Now, ProjectId = demoId, TicketPriorityId = priorityUrgent, TicketStatusId = statusNew, TicketTypeId = typeEnhancement},
 
-                };
+
+
+
+				};
 
 
                 var dbTickets = context.Tickets.Select(c => c.Title).ToList();
@@ -928,6 +945,7 @@ namespace TheBugTracker.Data
                 throw;
             }
         }
+
 
     }
 }
