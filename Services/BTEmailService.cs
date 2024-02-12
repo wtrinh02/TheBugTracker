@@ -38,6 +38,7 @@ namespace TheBugTracker.Services
                 var mail = _mailSettings.Mail ?? Environment.GetEnvironmentVariable("Mail");
 
                 smtp.Connect(host, port, SecureSocketOptions.StartTls);
+                System.Console.WriteLine("Passed connect");
                 smtp.Authenticate(mail,password);
 
                 await smtp.SendAsync(email);
