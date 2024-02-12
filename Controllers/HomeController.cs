@@ -27,14 +27,15 @@ namespace TheBugTracker.Controllers
 			_ticketService = ticketService;
 		}
 
-		public IActionResult Index()
+        
+        public IActionResult Index()
         {
             if (User.Identity?.IsAuthenticated == true)
             {
                 return RedirectToAction("Dashboard");
             }
 
-            return View();
+			return View();
         }
 
         public async Task<IActionResult> Dashboard()

@@ -12,8 +12,7 @@ namespace TheBugTracker.Data
         private static int company1Id;
         private static int company2Id;
         private static int company3Id;
-        private static int company4Id;
-        private static int company5Id;
+
 
         public static string GetConnectionString(IConfiguration configuration)
         {
@@ -171,7 +170,7 @@ namespace TheBugTracker.Data
                      },
                      new Project()
                      {
-                         CompanyId = company1Id,
+                         CompanyId = company3Id,
                          Name = "Build an Issue Tracking Web Application",
                          Description="A custom designed .Net Core application with postgres database.  The application is a multi tennent application designed to track issue tickets' progress.  Implemented with identity and user roles, Tickets are maintained in projects which are maintained by users in the role of projectmanager.  Each project has a team and team members.",
                          StartDate = new DateTime(2021,8,20),

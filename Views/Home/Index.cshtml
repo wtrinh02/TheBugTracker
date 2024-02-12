@@ -4,74 +4,21 @@
     <!-- Jumbotron -->
     <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
         <div class="container">
-            <div class="row gx-lg-5 align-items-center">
-                <div class="col-lg-6 mb-5 mb-lg-0">
+            <div class="row gx-lg-5 ">
+                <div class="col-6 mb-5 mb-lg-0 d-flex justify-content-center flex-column align-items-center">
                     <h1 class="my-5 display-3 fw-bold ls-tight">
                         <img src="/img/icons/header_image.png" width="600"/>
                     </h1>
                     <p style="color: hsl(217, 10%, 50.8%)">
-                        Splat is a demo site based on an Issue Tracking System. Splat allows users to create and manage Company projects through the creation and management of tickets.
-                        Registration is currently closed. Please select a demo account to log in.
+                       Splat is a custom designed .Net Core application with postgres database.  The application is a multi tennent application designed to track issue tickets' progress.  Implemented with identity and user roles, Tickets are maintained in projects which are maintained by users in the role of projectmanager.  Each project has a team and team members.
+                       Try out with the button below!
                     </p>
                     <a class="btn btn-small btn-primary" asp-area="Identity" asp-page="/Account/Login">Try the Demo Accounts!</a>
 
 
                 </div>
 
-                <div class="col-lg-6 mb-5 mb-lg-0 mt-5">
-                    <div class="card">
-                        <div class="card-body py-5 px-md-5">
-                            <form>
-                                <!-- 2 column grid layout with text inputs for the first and last names -->
-                                <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <div class="form-outline">
-                                            <input type="text" id="form3Example1" class="form-control" disabled/>
-                                            <label class="form-label" for="form3Example1">First name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <div class="form-outline">
-                                            <input type="text" id="form3Example2" class="form-control" disabled />
-                                            <label class="form-label" for="form3Example2">Last name</label>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <!-- Email input -->
-                                <div class="form-outline mb-4">
-                                    <input type="email" id="form3Example3" class="form-control" disabled />
-                                    <label class="form-label" for="form3Example3">Email address</label>
-                                </div>
-
-                                <!-- Password input -->
-                                <div class="form-outline mb-4">
-                                    <input type="password" id="form3Example4" class="form-control" disabled />
-                                    <label class="form-label" for="form3Example4">Password</label>
-                                </div>
-
-
-                                <!-- Submit button -->
-                                <button type="submit" class="btn btn-primary btn-block mb-4">
-                                    Sign up
-                                </button>
-
-                                <!-- Register buttons -->
-                                <div class="text-center">
-                                    <p>or if you have an account:</p>
-                                    <div class="row">
-                                        <a class="btn btn-link btn-floating mx-1" asp-area="Identity" asp-page="/Account/Login">
-                                            Sign in!
-                                        </a>
-                                    </div>
-
-
-
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
