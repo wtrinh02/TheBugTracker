@@ -18,7 +18,7 @@ namespace TheBugTracker.Services
         {
             MimeMessage email = new();
 
-            email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
+            email.Sender = MailboxAddress.Parse(_mailSettings.Mail ?? Environment.GetEnvironmentVariable("Mail"));
             email.To.Add(MailboxAddress.Parse(emailTo));
             email.Subject = subject;
 
